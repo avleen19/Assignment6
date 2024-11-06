@@ -1,0 +1,106 @@
+db.employees.insertMany([
+    { name: "Alice", age: 32, experience: 6, department: "Engineering" },
+    { name: "Bob", age: 28, experience: 4, department: "Sales" },
+    { name: "Charlie", age: 40, experience: 10, department: "HR" },
+    { name: "David", age: 25, experience: 2, department: "IT" },
+    { name: "Eve", age: 29, experience: 7, department: "Finance" }
+])
+
+db.products.insertMany([
+    { product_name: "Notebook", stock: 10, price: 20 },
+    { product_name: "Pen", stock: 50, price: 2 },
+    { product_name: "Backpack", stock: 5, price: 45 },
+    { product_name: "Laptop", stock: 0, price: 500 },
+    { product_name: "Mouse", stock: 20, price: 25 }
+])
+
+db.students.insertMany([
+    { name: "John", enrolled: true, grade: "B", exam_score: 45, participation: false },
+    { name: "Jane", enrolled: false, grade: "A", exam_score: 70, participation: true },
+    { name: "Tom", enrolled: true, grade: "D", exam_score: 30, participation: false },
+    { name: "Lucy", enrolled: false, grade: "C", exam_score: 55, participation: true },
+    { name: "Mark", enrolled: true, grade: "F", exam_score: 48, participation: false }
+])
+db.courses.insertMany([
+    { course_name: "Math", duration: 4, instructor: "Dr. Lee" },
+    { course_name: "History", duration: 8, instructor: "Dr. Smith" },
+    { course_name: "Physics", duration: 12 },
+    { course_name: "Chemistry", duration: 6, instructor: "Dr. Ray" },
+    { course_name: "Biology", duration: 10, instructor: "Dr. John" }
+])
+db.orders.insertMany([
+    { order_id: 101, status: "pending", shipped_date: null },
+    { order_id: 102, status: "shipped", shipped_date: "2024-01-05" },
+    { order_id: 103, status: "processing", shipped_date: null },
+    { order_id: 104, status: "shipped" },
+    { order_id: 105, status: "canceled", shipped_date: null }
+])
+db.inventory.insertMany([
+    { item_name: "Table", price: 75, stock: 20 },
+    { item_name: "Chair", price: 45 },
+    { item_name: "Lamp", price: 15, stock: 5 },
+    { item_name: "Desk", price: 120, stock: 2 },
+    { item_name: "Bookcase", stock: 10 }
+])
+
+db.employees.find({
+    $or: [
+        { age: { $gt: 30 } },
+        { experience: { $gt: 5 } }
+    ]
+})
+db.products.find({
+    stock: { $gt: 0 },
+    price: { $lt: 50 }
+})
+db.students.find({
+    $or: [
+        { enrolled: false },
+        { grade: { $lt: "C" } }
+    ]
+})
+
+db.courses.find({
+    $or: [
+        { duration: { $lt: 6 } },
+        { instructor: { $exists: false } }
+    ]
+})
+
+db.orders.find({
+    $or: [
+        { status: { $ne: "shipped" } },
+        { shipped_date: { $exists: false } }
+    ]
+})
+
+db.employees.find(
+    { department: { $nin: ["Engineering", "IT"] } },
+    { name: 1, department: 1 }
+)
+
+db.students.find({
+    exam_score: { $lt: 50 },
+    participation: false
+})
+
+db.employees.find({
+    department: "Sales",
+    $or: [
+        { experience: { $gt: 3 } },
+        { age: { $lt: 25 } }
+    ]
+})
+
+db.inventory.find({
+    $or: [
+        { price: { $exists: true, $lt: 100 } },
+        { stock: { $exists: false } }
+    ]
+})
+
+
+db.courses.find({
+    instructor: { $ne: "John Smith" },
+    duration: { $not: { $gt: 10 } }
+})
